@@ -31,5 +31,21 @@ class Dish extends Model
     {
         return $this->belongsToMany(Tag::class);
     }
+
+    public function getStatus($diffTime): string
+    {
+        if ($diffTime > 0) {
+            if ($this->created_at >= date('Y-m-d H:i:s', $diffTime)) {
+                return 'created';
+            }
+            if ($this->updated_at >= date('Y-m-d H:i:s', $diffTime)) {
+                return 'modified';
+            }
+            if ($this->deleted_at !== null) {
+                return 'deleted';
+            }
+        }
+        return 'created';
+    }
     
 }
