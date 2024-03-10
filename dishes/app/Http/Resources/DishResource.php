@@ -14,14 +14,30 @@ class DishResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+        $data = [
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
-            'category' => new CategoryResource($this->category),
-            'tags' => TagResource::collection($this->tags),
-            'ingredients' => IngredientResource::collection($this->ingredients),
-            'status' => $this->getStatus($request->input('diff_time')),
         ];
+
+        if ($request->has('with')) {
+            $with = explode(',', $request->input('with'));
+
+            if (in_array('category', $with)) {
+                $data['category'] = new CategoryResource($this->category);
+            }
+
+            if (in_array('tags', $with)) {
+                $data['tags'] = TagResource::collection($this->tags);
+            }
+
+            if (in_array('ingredients', $with)) {
+                $data['ingredients'] = IngredientResource::collection($this->ingredients);
+            }
+        }
+
+        $data['status'] = $this->getStatus($request->input('diff_time'));
+
+        return $data;
     }
 }

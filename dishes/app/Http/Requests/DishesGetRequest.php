@@ -24,7 +24,7 @@ class DishesGetRequest extends FormRequest
         return [
             'per_page' => 'nullable|integer|min:1',
             'page' => 'nullable|integer|min:1',
-            'category' => 'nullable|integer',
+            'category' => 'nullable',
             'tags.*' => 'nullable|integer',
             'with.*' => 'nullable|in:ingredients,category,tags',
             'lang' => 'required|string',
