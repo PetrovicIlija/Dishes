@@ -27,7 +27,7 @@ class DishesGetRequest extends FormRequest
             'category' => 'nullable',
             'tags.*' => 'nullable|integer',
             'with.*' => 'nullable|in:ingredients,category,tags',
-            'lang' => 'required|string',
+            'lang' => 'nullable|in:en,hr',
             'diff_time' => 'nullable|integer|min:0',
         ];
     }

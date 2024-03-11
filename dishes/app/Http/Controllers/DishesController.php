@@ -16,7 +16,12 @@ class DishesController extends Controller
         $category = $request->input('category', null);
         $tags = $request->input('tags', []);
         $with = $request->input('with', []);
-        app()->setLocale($lang = $request->input('lang'));
+        if ($request->input('lang')) {
+            app()->setLocale($request->input('lang'));
+        }
+        else {
+            app()->setLocale('en');
+        }
         $diffTime = $request->input('diff_time');
         $dishes = Dish::query();
         if ($category !== null) {
@@ -45,14 +50,13 @@ class DishesController extends Controller
             $dishes->with('tags');
         }
         if ($diffTime > 0) {
-            $dishes->where(function ($query) use ($diffTime) {
+            $dishes->withTrashed()->where(function ($query) use ($diffTime) {
                 $query->where('created_at', '>=', date('Y-m-d H:i:s', $diffTime))
                     ->orWhere('updated_at', '>=', date('Y-m-d H:i:s', $diffTime))
-                    ->orWhereNotNull('deleted_at');
+                    ->orWhere('deleted_at', '>=', date('Y-m-d H:i:s', $diffTime));
             });
         }
         $dishes = $dishes->paginate($perPage, ['*'], 'page', $page);
-
         return DishResource::collection($dishes);
     }
 }
