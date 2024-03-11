@@ -42,7 +42,7 @@ class Dish extends Model
             if ($this->updated_at >= date('Y-m-d H:i:s', $diffTime)) {
                 return 'modified';
             }
-            if ($this->deleted_at !== null) {
+            if ($this->deleted_at >= date('Y-m-d H:i:s', $diffTime)) {
                 return 'deleted';
             }
         }
