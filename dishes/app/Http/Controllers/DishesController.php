@@ -18,8 +18,7 @@ class DishesController extends Controller
         $with = $request->input('with', []);
         if ($request->input('lang')) {
             app()->setLocale($request->input('lang'));
-        }
-        else {
+        } else {
             app()->setLocale('en');
         }
         $diffTime = $request->input('diff_time');
